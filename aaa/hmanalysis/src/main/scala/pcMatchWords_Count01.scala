@@ -69,12 +69,14 @@ object pcMatchWords_Count01 {
     }
     val hdfsRdd: RDD[(String, Int)] = listRdd.map((_,1))
     val joinRdd: RDD[(String, (String, Int))] = mapRdd.join(hdfsRdd)
-    joinRdd.map{
-      case (word,(rowkeycount,count))=>{
+    val resultRdd: RDD[(String, (String, Int))] = joinRdd.map {
+      case (word, (rowkeycount, count)) => {
         val rowkeycnt: Array[String] = rowkeycount.split("_")
-        (rowkeycnt(0),(word,count))
+        (rowkeycnt(0), (word, count))
       }
     }
+
+
 
 
   }
